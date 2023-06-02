@@ -1,13 +1,16 @@
 package com.small.mybatis;
 
-import com.small.mybatis.binding.MapperRegistry;
 import com.small.mybatis.dao.UserDao;
+import com.small.mybatis.io.Resources;
 import com.small.mybatis.session.SqlSession;
+import com.small.mybatis.session.SqlSessionFactoryBuilder;
 import com.small.mybatis.session.impl.DefaultSqlSessionFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Proxy;
 
 /**
@@ -46,7 +49,7 @@ public class ApiTest {
     /**
      * 第二章测试
      */
-    @Test
+    /*@Test
     public void test_MapperRegistry() {
         MapperRegistry mapperRegistry = new MapperRegistry();
         mapperRegistry.addMappers("com.small.mybatis.dao");
@@ -54,6 +57,21 @@ public class ApiTest {
         SqlSession sqlSession = sqlSessionFactory.openSqlSession();
         UserDao userDao = sqlSession.getMapper(UserDao.class);
         String result = userDao.queryUserName("1");
+        System.out.println(result);
+    }*/
+
+    /**
+     * 第三章 xml解析器测试
+     */
+    @Test
+    public void test_SqlSessionFactory() throws IOException {
+        //从sqlSessionFactory中获取SqlSession;
+        Reader reader = Resources.getResourceAsReader("mybatis-config-datasource.xml");
+        DefaultSqlSessionFactory defaultSqlSessionFactory =
+                (DefaultSqlSessionFactory) new SqlSessionFactoryBuilder().build(reader);
+        SqlSession sqlSession = defaultSqlSessionFactory.openSqlSession();
+        UserDao userDao = sqlSession.getMapper(UserDao.class);
+        String result = userDao.queryUserInfoById("1000");
         System.out.println(result);
     }
 }

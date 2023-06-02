@@ -6,11 +6,19 @@ package com.small.mybatis.session;
  */
 public interface SqlSession {
 
-     <T> T selectOne(String uid);
+    <T> T selectOne(String uid);
 
     <T> T selectOne(String statement, Object parameter);
 
     <T> T getMapper(Class<T> type);
+
+    /**
+     * Retrieves current configuration
+     * 得到配置
+     *
+     * @return Configuration
+     */
+    Configuration getConfiguration();
 
 
 }
