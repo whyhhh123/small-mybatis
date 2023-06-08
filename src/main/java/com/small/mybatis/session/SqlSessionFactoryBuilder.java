@@ -11,7 +11,6 @@ import java.io.Reader;
  */
 public class SqlSessionFactoryBuilder {
     public SqlSessionFactory build(Reader reader) {
-
         XMLConfigBuilder xmlConfigBuilder = new XMLConfigBuilder(reader);
         return build(xmlConfigBuilder.parse());
     }

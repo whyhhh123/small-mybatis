@@ -1,8 +1,11 @@
 package com.small.mybatis;
 
+import com.alibaba.fastjson.JSON;
 import com.small.mybatis.dao.UserDao;
 import com.small.mybatis.io.Resources;
+import com.small.mybatis.po.User;
 import com.small.mybatis.session.SqlSession;
+import com.small.mybatis.session.SqlSessionFactory;
 import com.small.mybatis.session.SqlSessionFactoryBuilder;
 import com.small.mybatis.session.impl.DefaultSqlSessionFactory;
 import org.junit.Test;
@@ -28,8 +31,8 @@ public class ApiTest {
                 new Class[]{UserDao.class},
                 ((proxy, method, args) ->
                         "你被代理了"));
-        String result = userDao.queryUserName("10");
-        logger.info(result);
+        User result = userDao.queryUserName(1L);
+        logger.info("测试结果:{}",result);
     }
 
     /**
@@ -62,7 +65,7 @@ public class ApiTest {
 
     /**
      * 第三章 xml解析器测试
-     */
+     *//*
     @Test
     public void test_SqlSessionFactory() throws IOException {
         //从sqlSessionFactory中获取SqlSession;
@@ -73,5 +76,21 @@ public class ApiTest {
         UserDao userDao = sqlSession.getMapper(UserDao.class);
         String result = userDao.queryUserInfoById("1000");
         System.out.println(result);
+    }*/
+
+    /**
+     * 第四章 数据源的解析、创建和使用
+     */
+    @Test
+    public void test_SqlSessionFactory() throws IOException {
+        //从sqlSessionFactory中获取sqlSession
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsReader("mybatis-config-datasource.xml"));
+        SqlSession sqlSession = sqlSessionFactory.openSqlSession();
+        //获取映射器对象
+        UserDao userDao = sqlSession.getMapper(UserDao.class);
+        //测试结果
+        User user = userDao.queryUserName(1L);
+        logger.info("测试结果：{}", JSON.toJSONString(user));
+
     }
 }
