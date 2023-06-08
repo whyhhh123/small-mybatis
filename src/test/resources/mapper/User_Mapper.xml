@@ -3,7 +3,7 @@
 <mapper namespace="com.small.mybatis.dao.UserDao">
 
     <select id="queryUserName" parameterType="java.lang.Long" resultType="com.small.mybatis.po.User">
-        SELECT id, userId, userHead, createTime
+        SELECT id, userId, userHead
         FROM user
         where id = #{id}
     </select>
